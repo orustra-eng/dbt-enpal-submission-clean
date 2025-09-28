@@ -1,10 +1,11 @@
 # Enpal dbt Assessment
 
-[![Docs Build](https://github.com/orustra-eng/dbt-enpal-submission/actions/workflows/dbt-docs.yml/badge.svg?branch=main)](https://github.com/orustra-eng/dbt-enpal-submission/actions/workflows/dbt-docs.yml)
-[![dbt Docs (GitHub Pages)](https://img.shields.io/badge/dbt%20Docs-View%20site-blue)](https://orustra-eng.github.io/dbt-enpal-submission/)
+[![Docs Build](https://github.com/orustra-eng/dbt-enpal-submission-clean/actions/workflows/dbt-docs.yml/badge.svg?branch=main)](https://github.com/orustra-eng/dbt-enpal-submission-clean/actions/workflows/dbt-docs.yml)
+[![dbt Docs (GitHub Pages)](https://img.shields.io/badge/dbt%20Docs-View%20site-blue)](https://orustra-eng.github.io/dbt-enpal-submission-clean/)
 
-**Docs:** https://orustra-eng.github.io/dbt-enpal-submission/  
-**Workflow:** https://github.com/orustra-eng/dbt-enpal-submission/actions/workflows/dbt-docs.yml
+**Docs:** https://orustra-eng.github.io/dbt-enpal-submission-clean/  
+**Workflow:** https://github.com/orustra-eng/dbt-enpal-submission-clean/actions/workflows/dbt-docs.yml
+
 
 ## What’s inside
 - Staging models (`models/staging`)

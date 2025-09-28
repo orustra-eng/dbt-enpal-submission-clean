@@ -1,0 +1,12 @@
+enpal_assessment_project:
+  target: ci
+  outputs:
+    ci:
+      type: postgres
+      host: 127.0.0.1
+      user: admin
+      password: admin
+      port: 5432
+      dbname: analytics
+      schema: pipedrive_analytics
+      threads: 4

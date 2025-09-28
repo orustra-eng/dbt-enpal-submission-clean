@@ -1,0 +1,77 @@
+name: dbt Docs
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: analytics
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: admin
+        ports: [ "5432:5432" ]
+        options: >-
+          --health-cmd="pg_isready -U admin -d analytics"
+          --health-interval=10s --health-timeout=5s --health-retries=5
+
+    env:
+      PROFILES_DIR: ${{ github.workspace }}/.github/workflows/ci
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dbt
+        run: |
+          pip install "dbt-core==1.10.11" "dbt-postgres==1.9.1"
+
+      - name: Install packages
+        run: dbt deps --project-dir .
+
+      - name: Parse project
+        run: dbt parse --project-dir . --profiles-dir "${{ env.PROFILES_DIR }}"
+
+      - name: Seed + run
+        run: |
+          dbt seed --project-dir . --profiles-dir "${{ env.PROFILES_DIR }}" --full-refresh
+          dbt run  --project-dir . --profiles-dir "${{ env.PROFILES_DIR }}"
+
+      - name: Generate docs
+        run: dbt docs generate --project-dir . --profiles-dir "${{ env.PROFILES_DIR }}"
+
+      - name: Upload docs artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
